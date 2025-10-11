@@ -1,4 +1,4 @@
-import { LucideIcon, House, KeyRound } from "lucide-react"
+import { LucideIcon, House, KeyRound, Users } from "lucide-react"
 
 export interface MenuItem {
   title: string
@@ -23,6 +23,11 @@ export const defaultMenuConfig: MenuConfig = {
           title: "Dashboard",
           url: "/admin/dashboard",
           icon: House,
+        },
+        {
+          title: "Users",
+          url: "/admin/dashboard/users",
+          icon: Users,
         },
       ],
     },
