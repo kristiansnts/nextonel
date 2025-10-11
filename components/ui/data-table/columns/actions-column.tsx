@@ -20,7 +20,7 @@ interface ActionsColumnProps {
   header?: string
 }
 
-export function ActionsColumn() {
+export function ActionsColumn(_props: ActionsColumnProps) {
   // This component doesn't render anything - it's just for configuration
   return null
 }

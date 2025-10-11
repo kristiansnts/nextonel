@@ -5,7 +5,7 @@ import { ArrowUpDown } from "lucide-react"
 import { TextColumnProps } from "../types"
 import { Column, Row } from "@tanstack/react-table"
 
-export function TextColumn() {
+export function TextColumn(_props: TextColumnProps) {
   // This component doesn't render anything - it's just for configuration
   return null
 }
@@ -53,11 +53,11 @@ TextColumn.createColumnDef = (props: TextColumnProps) => {
       // Handle nested accessors like "company.name"
       if (accessor.includes(".")) {
         const keys = accessor.split(".")
-        let nestedValue = row.original
+        let nestedValue: unknown = row.original
         for (const key of keys) {
-          nestedValue = nestedValue?.[key]
+          nestedValue = (nestedValue as Record<string, unknown>)?.[key]
         }
-        return <span>{nestedValue}</span>
+        return <span>{String(nestedValue)}</span>
       }
 
       // Handle string values with capitalize
@@ -65,7 +65,7 @@ TextColumn.createColumnDef = (props: TextColumnProps) => {
         return <span className="capitalize">{value}</span>
       }
 
-      return <span>{value}</span>
+      return <span>{String(value)}</span>
     },
     enableSorting: sortable,
     enableHiding: hideable,

@@ -98,7 +98,7 @@ export default function UsersPage() {
           <ImageColumn
             accessor="image"
             header="Avatar"
-            alt={(row) => `${row.firstName} ${row.lastName}`}
+            alt={(row) => `${(row as User).firstName} ${(row as User).lastName}`}
           />
           <TextColumn accessor="firstName" header="First Name" sortable searchable />
           <TextColumn accessor="lastName" header="Last Name" sortable searchable />
@@ -117,15 +117,15 @@ export default function UsersPage() {
           <TextColumn accessor="company.name" header="Company" searchable/>
           <TextColumn accessor="company.title" header="Job Title" searchable/>
           <ActionsColumn>
-            <Action icon={Eye} label="Copy email" onClick={handleCopyEmail} />
+            <Action icon={Eye} label="Copy email" onClick={(row) => handleCopyEmail(row as User)} />
             <Action separator label="" onClick={() => {}} />
-            <Action icon={Eye} label="View details" onClick={handleView} />
-            <Action icon={Edit} label="Edit user" onClick={handleEdit} />
+            <Action icon={Eye} label="View details" onClick={(row) => handleView(row as User)} />
+            <Action icon={Edit} label="Edit user" onClick={(row) => handleEdit(row as User)} />
             <Action separator label="" onClick={() => {}} />
             <Action
               icon={Trash}
               label="Delete user"
-              onClick={handleDelete}
+              onClick={(row) => handleDelete(row as User)}
               variant="destructive"
             />
           </ActionsColumn>
