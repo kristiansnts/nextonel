@@ -1,9 +1,8 @@
 'use client';
 
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
 import { useEffect } from "react"
-import { Button } from "@/components/ui/button"
 
 export default function AdminLayout({
   children,
@@ -38,26 +37,5 @@ export default function AdminLayout({
     return null
   }
 
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/admin/login' })
-  }
-
-  return (
-    <div className="min-h-screen">
-      <header className="border-b bg-white">
-        <div className="flex items-center justify-between px-6 py-4">
-          <h1 className="text-xl font-semibold">Admin Dashboard</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              Welcome, {session.user?.email}
-            </span>
-            <Button variant="outline" onClick={handleSignOut}>
-              Sign Out
-            </Button>
-          </div>
-        </div>
-      </header>
-      <main>{children}</main>
-    </div>
-  )
+  return <>{children}</>
 }
