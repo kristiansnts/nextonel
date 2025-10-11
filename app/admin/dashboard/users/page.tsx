@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/data-table"
 import { Eye, Edit, Trash } from "lucide-react"
 import { User, UsersResponse } from "@/types/user"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
@@ -91,6 +93,11 @@ export default function UsersPage() {
             Manage and view all users in the system.
           </p>
         </div>
+        <Link href="/admin/dashboard/users/create">
+          <Button className="hover:cursor-pointer">
+            Create User
+          </Button>
+        </Link>
       </div>
       <div className="px-8 pb-8">
         <DataTable data={users}>
