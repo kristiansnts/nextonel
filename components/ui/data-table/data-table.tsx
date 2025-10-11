@@ -15,7 +15,6 @@ import {
 } from "@tanstack/react-table"
 
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -51,13 +50,19 @@ export function DataTable<TData>({
   // Extract column definitions from children
   const columns = React.useMemo(() => {
     const childArray = React.Children.toArray(children)
-    return childArray.map((child: any) => {
-      const columnType = child.type
-      if (typeof columnType?.createColumnDef === "function") {
-        return columnType.createColumnDef(child.props)
-      }
-      return null
-    }).filter(Boolean) as ColumnDef<TData>[]
+    return childArray
+      .map((child) => {
+        if (React.isValidElement(child)) {
+          const columnType = child.type as {
+            createColumnDef?: (props: unknown) => ColumnDef<TData>
+          }
+          if (typeof columnType?.createColumnDef === "function") {
+            return columnType.createColumnDef(child.props)
+          }
+        }
+        return null
+      })
+      .filter(Boolean) as ColumnDef<TData>[]
   }, [children])
 
   // Extract searchable and filterable column configs
@@ -70,17 +75,25 @@ export function DataTable<TData>({
       options: Array<{ label: string; value: string }>
     }> = []
 
-    childArray.forEach((child: any) => {
-      const props = child.props
-      if (props.searchable && props.accessor) {
-        searchable.push(props.accessor)
-      }
-      if (props.filterable && props.accessor && props.filterOptions) {
-        filterable.push({
-          id: props.accessor,
-          title: props.header || props.accessor,
-          options: props.filterOptions,
-        })
+    childArray.forEach((child) => {
+      if (React.isValidElement(child)) {
+        const props = child.props as {
+          searchable?: boolean
+          accessor?: string
+          filterable?: boolean
+          filterOptions?: Array<{ label: string; value: string }>
+          header?: string
+        }
+        if (props.searchable && props.accessor) {
+          searchable.push(props.accessor)
+        }
+        if (props.filterable && props.accessor && props.filterOptions) {
+          filterable.push({
+            id: props.accessor,
+            title: props.header || props.accessor,
+            options: props.filterOptions,
+          })
+        }
       }
     })
 
@@ -109,16 +122,16 @@ export function DataTable<TData>({
     onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: (row, columnId, filterValue) => {
+    globalFilterFn: (row, _columnId, filterValue) => {
       // Search across all searchable columns
       const searchValue = String(filterValue).toLowerCase()
 
       return searchableColumns.some((accessor) => {
         // Handle nested accessors like "company.name"
         const keys = accessor.split(".")
-        let value = row.original as any
+        let value: unknown = row.original
         for (const key of keys) {
-          value = value?.[key]
+          value = (value as Record<string, unknown>)?.[key]
         }
 
         return String(value).toLowerCase().includes(searchValue)

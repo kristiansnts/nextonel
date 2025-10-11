@@ -2,9 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
-import { TextColumnProps, ColumnComponentProps } from "../types"
+import { TextColumnProps } from "../types"
+import { Column, Row } from "@tanstack/react-table"
 
-export function TextColumn(_props: TextColumnProps & ColumnComponentProps) {
+export function TextColumn() {
   // This component doesn't render anything - it's just for configuration
   return null
 }
@@ -25,7 +26,7 @@ TextColumn.createColumnDef = (props: TextColumnProps) => {
   return {
     accessorKey: accessor,
     header: sortable
-      ? ({ column }: any) => (
+      ? ({ column }: { column: Column<unknown> }) => (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -35,7 +36,7 @@ TextColumn.createColumnDef = (props: TextColumnProps) => {
           </Button>
         )
       : header,
-    cell: ({ row, getValue }: any) => {
+    cell: ({ row, getValue }: { row: Row<unknown>; getValue: () => unknown }) => {
       const value = getValue()
 
       // Handle numeric columns
@@ -69,8 +70,8 @@ TextColumn.createColumnDef = (props: TextColumnProps) => {
     enableSorting: sortable,
     enableHiding: hideable,
     filterFn: filterable
-      ? (row: any, id: string, value: any) => {
-          return value.includes(row.getValue(id))
+      ? (row: Row<unknown>, id: string, value: string[]) => {
+          return value.includes(String(row.getValue(id)))
         }
       : undefined,
   }

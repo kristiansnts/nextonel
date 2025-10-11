@@ -12,25 +12,25 @@ export interface BaseColumnProps {
 
 export interface TextColumnProps extends BaseColumnProps {
   filterOptions?: Array<{ label: string; value: string }>
-  transform?: (value: any) => string
+  transform?: (value: unknown) => string
   numeric?: boolean
   format?: (value: number) => string
 }
 
 export interface ImageColumnProps extends BaseColumnProps {
   className?: string
-  alt?: (row: any) => string
+  alt?: (row: unknown) => string
 }
 
 export interface ActionProps {
   icon?: LucideIcon
   label: string
-  onClick: (row: any) => void
+  onClick: (row: unknown) => void
   variant?: "default" | "destructive"
   separator?: boolean
 }
 
 export interface ColumnComponentProps {
   _columnType?: string
-  _columnDef?: ColumnDef<any>
+  _columnDef?: ColumnDef<unknown>
 }

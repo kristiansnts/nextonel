@@ -1,9 +1,10 @@
 "use client"
 
 import Image from "next/image"
-import { ImageColumnProps, ColumnComponentProps } from "../types"
+import { ImageColumnProps } from "../types"
+import { Row } from "@tanstack/react-table"
 
-export function ImageColumn(_props: ImageColumnProps & ColumnComponentProps) {
+export function ImageColumn() {
   // This component doesn't render anything - it's just for configuration
   return null
 }
@@ -21,7 +22,7 @@ ImageColumn.createColumnDef = (props: ImageColumnProps) => {
   return {
     accessorKey: accessor,
     header: header,
-    cell: ({ row, getValue }: any) => {
+    cell: ({ row, getValue }: { row: Row<unknown>; getValue: () => unknown }) => {
       const imageUrl = getValue() as string
       const altText = alt ? alt(row.original) : "Image"
 

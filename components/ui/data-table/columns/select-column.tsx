@@ -1,9 +1,10 @@
 "use client"
 
 import { Checkbox } from "@/components/ui/checkbox"
-import { ColumnComponentProps } from "../types"
+import { Table } from "@tanstack/react-table"
+import { Row } from "@tanstack/react-table"
 
-export function SelectColumn(_props: ColumnComponentProps) {
+export function SelectColumn() {
   // This component doesn't render anything - it's just for configuration
   return null
 }
@@ -11,7 +12,7 @@ export function SelectColumn(_props: ColumnComponentProps) {
 // Column definition generator
 SelectColumn.createColumnDef = () => ({
   id: "select",
-  header: ({ table }: any) => (
+  header: ({ table }: { table: Table<unknown> }) => (
     <Checkbox
       checked={
         table.getIsAllPageRowsSelected() ||
@@ -21,7 +22,7 @@ SelectColumn.createColumnDef = () => ({
       aria-label="Select all"
     />
   ),
-  cell: ({ row }: any) => (
+  cell: ({ row }: { row: Row<unknown> }) => (
     <Checkbox
       checked={row.getIsSelected()}
       onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
