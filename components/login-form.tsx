@@ -84,7 +84,7 @@ export function LoginForm({
                       variant="outline" 
                       type="button" 
                       onClick={handleGoogleSignIn}
-                      className="w-full"
+                      className="w-full hover:cursor-pointer"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 mr-2">
                         <path
@@ -100,7 +100,7 @@ export function LoginForm({
                       variant="outline" 
                       type="button" 
                       onClick={handleGitHubSignIn}
-                      className="w-full"
+                      className="w-full hover:cursor-pointer"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 mr-2">
                         <path
@@ -159,7 +159,7 @@ export function LoginForm({
                     </Field>
                   )}
                   <Field>
-                    <Button type="submit" disabled={isLoading}>
+                    <Button type="submit" disabled={isLoading} className="w-full hover:cursor-pointer">
                       {isLoading ? 'Signing in...' : 'Sign in'}
                     </Button>
                   </Field>

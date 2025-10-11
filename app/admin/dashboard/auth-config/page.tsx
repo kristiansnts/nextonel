@@ -4,21 +4,21 @@ import { AuthProviderConfig } from "@/components/auth-provider-config"
 
 export default function AuthConfigPage() {
   return (
-    <div className="p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="flex flex-1 flex-col p-8">
+      <div className="max-w-4xl mx-auto w-full">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Authentication Configuration</h1>
           <p className="text-muted-foreground mt-2">
             Configure which authentication providers are available on the login page.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
             <h2 className="text-xl font-semibold mb-4">Provider Settings</h2>
             <AuthProviderConfig />
           </div>
-          
+
           <div>
             <h2 className="text-xl font-semibold mb-4">Preview</h2>
             <div className="p-4 border rounded-lg bg-muted/50">
@@ -29,7 +29,7 @@ export default function AuthConfigPage() {
                 </a>{" "}
                 to see the changes in action.
               </p>
-              
+
               <div className="text-xs space-y-2">
                 <div><strong>How it works:</strong></div>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
