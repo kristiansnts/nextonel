@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -10,15 +11,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
-import { ColumnComponentProps, ActionProps } from "../types"
+import { ActionProps } from "../types"
 import { ReactElement } from "react"
+import { Row } from "@tanstack/react-table"
 
-interface ActionsColumnProps extends ColumnComponentProps {
+interface ActionsColumnProps {
   children?: ReactElement<ActionProps> | ReactElement<ActionProps>[]
   header?: string
 }
 
-export function ActionsColumn(_props: ActionsColumnProps) {
+export function ActionsColumn() {
   // This component doesn't render anything - it's just for configuration
   return null
 }
@@ -29,13 +31,15 @@ ActionsColumn.createColumnDef = (props: ActionsColumnProps) => {
 
   // Extract action configurations from children
   const actions = React.Children.toArray(children)
-    .filter((child: any) => child?.props)
-    .map((child: any) => child.props as ActionProps)
+    .filter((child): child is ReactElement<ActionProps> =>
+      React.isValidElement(child) && child.props !== undefined
+    )
+    .map((child) => child.props)
 
   return {
     id: "actions",
     header: header,
-    cell: ({ row }: any) => {
+    cell: ({ row }: { row: Row<unknown> }) => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -73,6 +77,3 @@ ActionsColumn.createColumnDef = (props: ActionsColumnProps) => {
     enableHiding: false,
   }
 }
-
-// Add React import for Children API
-import React from "react"
