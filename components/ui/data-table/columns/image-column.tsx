@@ -4,6 +4,7 @@ import Image from "next/image"
 import { ImageColumnProps } from "../types"
 import { Row } from "@tanstack/react-table"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ImageColumn(_props: ImageColumnProps) {
   // This component doesn't render anything - it's just for configuration
   return null

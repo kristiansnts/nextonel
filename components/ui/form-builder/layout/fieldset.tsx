@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { FieldsetProps } from "../types"
-import { cn } from "@/lib/utils"
 
 export function Fieldset({ legend, children }: FieldsetProps) {
   return (

@@ -1,13 +1,13 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { FieldWrapper } from "../field-wrapper"
 import { useFormContext } from "../form-context"
 import { FileUploadProps } from "../types"
 import { Upload, X, File } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 export function FileUpload(props: FileUploadProps) {
   const {
@@ -132,11 +132,15 @@ export function FileUpload(props: FileUploadProps) {
                 className="flex items-center gap-2 rounded-md border p-2"
               >
                 {preview && file.type.startsWith("image/") ? (
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={file.name}
-                    className="h-10 w-10 rounded object-cover"
-                  />
+                  <div className="relative h-10 w-10 rounded overflow-hidden">
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt={file.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
                 ) : (
                   <File className="h-10 w-10 text-muted-foreground" />
                 )}
