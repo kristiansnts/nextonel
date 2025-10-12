@@ -7,7 +7,6 @@ import { FieldWrapper } from "../field-wrapper"
 import { useFormContext } from "../form-context"
 import { KeyValueProps } from "../types"
 import { Plus, X } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 type KeyValuePair = { key: string; value: string }
 

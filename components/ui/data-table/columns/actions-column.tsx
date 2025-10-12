@@ -20,6 +20,7 @@ interface ActionsColumnProps {
   header?: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ActionsColumn(_props: ActionsColumnProps) {
   // This component doesn't render anything - it's just for configuration
   return null

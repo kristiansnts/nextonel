@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Textarea as TextareaUI } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { FieldWrapper } from "../field-wrapper"
 import { useFormContext } from "../form-context"

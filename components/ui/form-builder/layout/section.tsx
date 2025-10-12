@@ -5,7 +5,6 @@ import { SectionProps } from "../types"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { cn } from "@/lib/utils"
 
 export function Section({
   title,

@@ -5,6 +5,7 @@ import { ArrowUpDown } from "lucide-react"
 import { TextColumnProps } from "../types"
 import { Column, Row } from "@tanstack/react-table"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function TextColumn(_props: TextColumnProps) {
   // This component doesn't render anything - it's just for configuration
   return null

@@ -1,4 +1,4 @@
-import { LucideIcon, House, KeyRound, Users, FileEdit } from "lucide-react"
+import { LucideIcon, House, KeyRound, Users, FileEdit, Bell } from "lucide-react"
 
 export interface MenuItem {
   title: string
@@ -25,14 +25,19 @@ export const defaultMenuConfig: MenuConfig = {
           icon: House,
         },
         {
-          title: "Users",
-          url: "/admin/dashboard/users",
+          title: "Table Builder Demo",
+          url: "/admin/dashboard/table-demo",
           icon: Users,
         },
         {
           title: "Form Builder Demo",
           url: "/admin/dashboard/form-demo",
           icon: FileEdit,
+        },
+        {
+          title: "Notification Demo",
+          url: "/admin/dashboard/notification-demo",
+          icon: Bell,
         },
       ],
     },
