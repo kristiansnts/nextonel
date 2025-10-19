@@ -11,6 +11,7 @@
   "files": [
     "dist",
     "templates",
+    "styles",
     "README.md"
   ],
   "exports": {
@@ -24,6 +25,7 @@
       "import": "./dist/components/index.mjs",
       "require": "./dist/components/index.js"
     },
+    "./styles/globals.css": "./styles/globals.css",
     "./package.json": "./package.json"
   },
   "keywords": [
