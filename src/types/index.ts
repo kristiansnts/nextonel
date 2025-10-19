@@ -1,13 +1,39 @@
 /**
- * TypeScript type definitions for ShadPanel
+ * Type definitions for ShadPanel
+ * Re-exports types from Form Builder and Data Table systems
  */
 
-// Note: Will extract types from various components
-// This file serves as the main entry point for all type exports
+// Re-export Form Builder types
+export type {
+  ValidationRule,
+  BaseFieldProps,
+  TextInputProps,
+  TextareaProps,
+  CheckboxProps,
+  ToggleProps,
+  SelectProps,
+  TagsInputProps,
+  DatePickerProps,
+  DateTimePickerProps,
+  FileUploadProps,
+  KeyValueProps,
+  MarkdownEditorProps,
+  RichEditorProps,
+  GridProps,
+  SectionProps,
+  FieldsetProps,
+  TabsProps,
+  GroupProps,
+  PlaceholderProps,
+  FormContextValue,
+  FieldComponentProps,
+} from "../components/ui/form-builder/types"
 
-// TODO: Export Form Builder types
-// TODO: Export Data Table types
-// TODO: Export common UI types
-
-// Placeholder - will be populated in next phase
-export {}
+// Re-export Data Table types
+export type {
+  BaseColumnProps,
+  TextColumnProps,
+  ImageColumnProps,
+  ActionProps,
+  ColumnComponentProps,
+} from "../components/ui/data-table/types"
