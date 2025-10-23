@@ -11,7 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "shadpanel/components"
+} from "@/components/ui"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { menuConfig } = usePanelMenu()

@@ -5,6 +5,7 @@ export interface TemplateVariables {
   APP_NAME: string
   PROJECT_NAME: string
   SHADPANEL_VERSION: string
+  NEXTAUTH_SECRET: string
   GOOGLE: boolean
   GITHUB: boolean
   CREDENTIALS: boolean
@@ -58,6 +59,10 @@ export function processTemplate(
   processed = processed.replace(
     /\{\{SHADPANEL_VERSION\}\}/g,
     variables.SHADPANEL_VERSION
+  )
+  processed = processed.replace(
+    /\{\{NEXTAUTH_SECRET\}\}/g,
+    variables.NEXTAUTH_SECRET
   )
 
   // Process conditional blocks
@@ -223,5 +228,62 @@ export async function mergeMenuConfigs(
     const demoContent = await fs.readFile(demoMenuPath, "utf-8")
     await fs.writeFile(baseMenuPath, demoContent, "utf-8")
     await fs.remove(demoMenuPath)
+  }
+}
+
+/**
+ * Copy UI components from the package to the target project
+ */
+export async function copyUIComponents(
+  packageDir: string,
+  targetDir: string
+): Promise<void> {
+  const sourceComponentsDir = path.join(packageDir, "components")
+  const targetComponentsDir = path.join(targetDir, "components")
+
+  if (!(await fs.pathExists(sourceComponentsDir))) {
+    throw new Error("Components directory not found in package")
+  }
+
+  // Copy all UI components
+  await fs.copy(sourceComponentsDir, targetComponentsDir, {
+    overwrite: false,
+    errorOnExist: false,
+  })
+}
+
+/**
+ * Copy lib utilities from the package to the target project
+ */
+export async function copyLibUtils(
+  packageDir: string,
+  targetDir: string
+): Promise<void> {
+  const sourceLibDir = path.join(packageDir, "lib")
+  const targetLibDir = path.join(targetDir, "lib")
+
+  if (await fs.pathExists(sourceLibDir)) {
+    await fs.copy(sourceLibDir, targetLibDir, {
+      overwrite: false,
+      errorOnExist: false,
+    })
+  }
+}
+
+/**
+ * Copy hooks from the package to the target project
+ */
+export async function copyHooks(
+  packageDir: string,
+  targetDir: string
+): Promise<void> {
+  const sourceHooksDir = path.join(packageDir, "hooks")
+  const targetHooksDir = path.join(targetDir, "hooks")
+
+  if (await fs.pathExists(sourceHooksDir)) {
+    await fs.copy(sourceHooksDir, targetHooksDir, {
+      overwrite: false,
+      errorOnExist: false,
+    })
   }
 }

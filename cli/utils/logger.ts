@@ -55,7 +55,7 @@ export const logger = {
   },
 
   // Print completion message
-  complete: (projectName: string, packageManager: string, installationType?: string, isCurrentDir?: boolean) => {
+  complete: (projectName: string, devCommand: string, installationType?: string, isCurrentDir?: boolean) => {
     console.log()
 
     // Different message based on installation type
@@ -77,18 +77,16 @@ export const logger = {
       console.log(chalk.cyan(`  cd ${projectName}`))
     }
 
+    console.log(chalk.cyan(`  ${devCommand}`))
+
     if (installationType === "full-panel") {
-      console.log(chalk.cyan(`  ${packageManager}`))
-      console.log(chalk.cyan(`  Open .env and configure your environment variables`))
-      console.log(chalk.cyan(`  ${packageManager === "npm run dev" ? "npm run dev" : packageManager.replace("npm", "").trim() + " dev"}`))
-    } else {
-      console.log(chalk.cyan(`  ${packageManager}`))
-      console.log(chalk.cyan(`  Import components: import { Form, DataTable } from "shadpanel"`))
+      console.log()
+      console.log(chalk.yellow("⚠️  Don't forget:"))
+      console.log(chalk.cyan(`  • Open .env and configure your authentication providers`))
     }
 
     console.log()
-    console.log(chalk.bold("📚 Documentation:"), chalk.cyan("https://shadpanel.dev/docs"))
-    console.log(chalk.bold("🌟 Star us:"), chalk.cyan("https://github.com/kristiansnts/shadpanel"))
+    console.log(chalk.bold("📚 Documentation:"), chalk.cyan("https://github.com/kristiansnts/shadpanel"))
     console.log()
   },
 

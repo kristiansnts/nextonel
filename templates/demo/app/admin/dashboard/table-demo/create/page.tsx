@@ -6,8 +6,8 @@ import {
   TextInput,
   Select,
   Section,
-} from "shadpanel/components"
-import { Button } from "shadpanel/components"
+} from "@/components/ui"
+import { Button } from "@/components/ui"
 import { toast } from "sonner"
 
 export default function CreateUserPage() {
