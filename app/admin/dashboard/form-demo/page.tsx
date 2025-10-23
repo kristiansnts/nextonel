@@ -4,10 +4,10 @@ import { useState } from "react"
 import {
   Form,
   TextInput,
-  Textarea,
-  Checkbox,
+  FormTextarea as Textarea,
+  FormCheckbox as Checkbox,
   Toggle,
-  Select,
+  FormSelect as Select,
   TagsInput,
   DatePicker,
   DateTimePicker,
@@ -18,7 +18,7 @@ import {
   Grid,
   Section,
   Fieldset,
-  Tabs,
+  FormTabs as Tabs,
   Group,
 } from "@/components/ui/form-builder"
 import { Button } from "@/components/ui/button"
