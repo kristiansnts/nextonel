@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "shadpanel/components"
+import { Button } from "@/components/ui"
 import { toast } from "sonner"
 import {
   Info,

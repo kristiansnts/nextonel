@@ -54,6 +54,28 @@ const handler = NextAuth({
       }
       return session
     }
+  },
+  events: {
+    async signOut() {
+      // Clear session on signout
+    }
+  },
+  // Handle JWT decryption errors gracefully
+  logger: {
+    error(code, metadata) {
+      if (code === 'JWT_SESSION_ERROR') {
+        // Suppress JWT decryption errors in logs (they'll be handled by returning null session)
+        console.log('JWT session error - invalid or expired token will be cleared')
+      } else {
+        console.error(code, metadata)
+      }
+    },
+    warn(code) {
+      console.warn(code)
+    },
+    debug(code, metadata) {
+      // Suppress debug logs in production
+    }
   }
 })
 

@@ -3,7 +3,7 @@
 import {
   Form,
   TextInput,
-  Select,
+  FormSelect as Select,
   DatePicker,
   Section,
   Grid,

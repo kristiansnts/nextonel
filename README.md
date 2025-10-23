@@ -1,77 +1,89 @@
 # ShadPanel
 
-> Next.js Admin Panel Toolkit with Form Builder, Data Table, and Authentication
+> Next.js Admin Panel CLI - Create complete admin panels instantly
 
-**ShadPanel** is a comprehensive admin panel toolkit built on top of [shadcn/ui](https://ui.shadcn.com) for Next.js 15+ applications. It provides a complete set of components, a powerful Form Builder, Data Table system, and optional authentication.
+**ShadPanel** is a CLI tool that scaffolds complete Next.js admin panels with authentication, form builders, data tables, and 50+ UI components based on [shadcn/ui](https://ui.shadcn.com).
 
-## Features
+## Quick Start
 
-- 🎨 **50+ UI Components** - Complete shadcn/ui component library
-- 📝 **Form Builder** - Filament-inspired declarative forms with validation
-- 📊 **Data Table** - Powerful tables with sorting, searching, and pagination
-- 🎯 **TypeScript First** - Full type safety and IntelliSense support
-- 🌙 **Dark Mode Ready** - Built-in theme support
-- 📱 **Responsive** - Mobile-friendly sidebar and layouts
-- 🔐 **Authentication** - Optional NextAuth.js integration
-- ⚡ **Zero Config** - Works out of the box
-
-## Installation
-
-### Option 1: Direct Usage (Recommended for existing projects)
-
-Install the package and start using components immediately:
-
-```bash
-npm install shadpanel
-# or
-pnpm install shadpanel
-```
-
-Import styles in your root layout:
-
-```tsx
-import 'shadpanel/styles/globals.css'
-```
-
-Start using components:
-
-```tsx
-import { Button, Card, Form, DataTable } from 'shadpanel'
-
-export default function MyPage() {
-  return (
-    <Card>
-      <Button>Hello ShadPanel!</Button>
-    </Card>
-  )
-}
-```
-
-**📖 [Quick Start Guide](./docs/QUICK_START.md)** | **📚 [Full Usage Examples](./DIRECT_USAGE.md)**
-
-### Option 2: Full Project Scaffolding
-
-Create a complete admin panel with authentication and demo pages:
+Create a new admin panel in seconds:
 
 ```bash
 npx shadpanel init
 ```
 
 This will:
-- ✅ Set up complete project structure
-- ✅ Configure Tailwind CSS and TypeScript
-- ✅ Add NextAuth.js authentication (optional)
-- ✅ Include demo pages and examples
-- ✅ Set up sidebar navigation
+- ✅ Set up complete Next.js 15 project structure
+- ✅ Configure Tailwind CSS v4 and TypeScript
+- ✅ Add NextAuth.js authentication with OAuth providers
+- ✅ Include Form Builder with validation
+- ✅ Add Data Table with sorting, filtering, and pagination
+- ✅ Set up responsive sidebar navigation
+- ✅ Include 50+ pre-configured UI components
+- ✅ Add demo pages and examples
 
-## Quick Examples
+## Features
 
-### Form Builder
+- 🎨 **50+ UI Components** - Complete shadcn/ui component library
+- 📝 **Form Builder** - Filament-inspired declarative forms with validation
+- 📊 **Data Table** - Powerful tables with sorting, searching, and pagination
+- 🔐 **Authentication** - NextAuth.js with Google, GitHub, and credentials
+- 🎯 **TypeScript First** - Full type safety and IntelliSense support
+- 🌙 **Dark Mode Ready** - Built-in theme support
+- 📱 **Responsive** - Mobile-friendly sidebar and layouts
+- ⚡ **Zero Config** - Works out of the box
+
+## Usage
+
+### Interactive Setup
+
+```bash
+npx shadpanel init
+```
+
+The CLI will prompt you for:
+- Project directory
+- Authentication providers (Google, GitHub, Credentials)
+- Component selection
+- Configuration options
+
+### Example Project Structure
+
+After running `npx shadpanel init`, you'll get:
+
+```
+your-project/
+├── app/
+│   ├── layout.tsx              # Root layout
+│   ├── page.tsx                # Home page
+│   ├── admin/
+│   │   ├── layout.tsx          # Admin auth wrapper
+│   │   ├── login/page.tsx      # Login page
+│   │   ├── dashboard/page.tsx  # Dashboard
+│   │   └── auth-config/        # Auth settings
+│   └── api/
+│       └── auth/[...nextauth]/ # NextAuth API
+├── components/
+│   ├── ui/                     # shadcn/ui components
+│   ├── app-sidebar.tsx         # Sidebar navigation
+│   ├── login-form.tsx          # Login component
+│   └── auth-provider-config.tsx
+├── hooks/
+│   └── use-auth-providers.ts   # Auth state management
+├── contexts/
+│   └── auth-providers-context.tsx
+└── lib/
+    └── utils.ts                # Utilities
+```
+
+## What You Get
+
+### Form Builder Example
 
 ```tsx
 'use client'
 
-import { Form, TextInput, FormSelect, Button } from 'shadpanel'
+import { Form, TextInput, FormSelect, Button } from '@/components/ui/form-builder'
 
 export default function UserForm() {
   return (
@@ -95,11 +107,11 @@ export default function UserForm() {
 }
 ```
 
-### Data Table
+### Data Table Example
 
 ```tsx
-import { DataTable, TextColumn, ActionsColumn, Action } from 'shadpanel'
-import { Edit } from 'lucide-react'
+import { DataTable, TextColumn, ActionsColumn, Action } from '@/components/ui/data-table'
+import { Edit, Trash } from 'lucide-react'
 
 export default function UsersTable({ users }) {
   return (
@@ -109,9 +121,32 @@ export default function UsersTable({ users }) {
       <TextColumn accessor="role" header="Role" sortable />
       <ActionsColumn>
         <Action icon={Edit} label="Edit" onClick={(row) => handleEdit(row)} />
+        <Action icon={Trash} label="Delete" onClick={(row) => handleDelete(row)} />
       </ActionsColumn>
     </DataTable>
   )
+}
+```
+
+### Authentication Example
+
+```tsx
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
+
+export default function AuthButton() {
+  const { data: session } = useSession()
+
+  if (session) {
+    return (
+      <div>
+        <p>Welcome, {session.user?.email}</p>
+        <Button onClick={() => signOut()}>Sign Out</Button>
+      </div>
+    )
+  }
+
+  return <Button onClick={() => signIn()}>Sign In</Button>
 }
 ```
 
@@ -131,35 +166,52 @@ export default function UsersTable({ users }) {
 ### Utilities
 `cn` (classnames utility), `useIsMobile` (responsive hook), `Toaster` (notifications)
 
-## Documentation
-
-- **[Quick Start Guide](./docs/QUICK_START.md)** - Get started in 3 steps
-- **[Direct Usage Guide](./DIRECT_USAGE.md)** - Comprehensive usage examples
-- **[Package Strategy](./PACKAGE.md)** - Development and architecture docs
-- **[Installation Guide](./INSTALLATION_GUIDE.md)** - Detailed installation instructions
-
 ## Requirements
 
+- **Node.js** 18.0.0 or higher
 - **Next.js** 15.0.0 or higher
 - **React** 18.0.0 or 19.0.0
 - **Tailwind CSS** v4
-- **TypeScript** (recommended)
+
+## Environment Variables
+
+After installation, create a `.env.local` file:
+
+```bash
+# NextAuth.js
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-key-here
+
+# Google OAuth (optional)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# GitHub OAuth (optional)
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+
+# App Config
+NEXT_APP_NAME="My Admin Panel"
+```
+
+Generate a secret key:
+```bash
+openssl rand -base64 32
+```
 
 ## Development
 
+After installation, run:
+
 ```bash
-# Install dependencies
-pnpm install
-
-# Run development server
+npm run dev
+# or
 pnpm dev
-
-# Build package
-pnpm build:package
-
-# Build Next.js app
-pnpm build
+# or
+yarn dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) to see your admin panel.
 
 ## Tech Stack
 
@@ -169,23 +221,8 @@ pnpm build
 - [shadcn/ui](https://ui.shadcn.com) - Base components
 - [Radix UI](https://www.radix-ui.com) - Headless components
 - [TanStack Table](https://tanstack.com/table) - Data tables
-- [NextAuth.js](https://next-auth.js.org) - Authentication (optional)
+- [NextAuth.js](https://next-auth.js.org) - Authentication
 - [Sonner](https://sonner.emilkowal.ski) - Toast notifications
-
-## Project Structure
-
-```
-shadpanel/
-├── src/               # Package source code
-│   ├── components/    # All UI components
-│   ├── lib/          # Utilities
-│   ├── hooks/        # React hooks
-│   └── types/        # TypeScript types
-├── styles/           # Importable CSS
-├── templates/        # CLI scaffolding templates
-├── cli/             # CLI tool source
-└── dist/            # Built package (generated)
-```
 
 ## Contributing
 
@@ -193,7 +230,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details
+MIT License - see LICENSE for details
 
 ## Author
 
@@ -212,4 +249,4 @@ Built with and inspired by:
 
 **⭐ Star this repo if you find it useful!**
 
-**📦 Published on NPM**: [shadpanel](https://www.npmjs.com/package/shadpanel)
+**📦 NPM Package**: [shadpanel](https://www.npmjs.com/package/shadpanel)

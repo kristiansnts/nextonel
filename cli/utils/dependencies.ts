@@ -123,8 +123,6 @@ export async function updatePackageJson(
   projectDir: string,
   options: {
     authentication: boolean
-    shadpanelVersion: string
-    localTarballPath?: string
   }
 ): Promise<void> {
   const packageJsonPath = path.join(projectDir, "package.json")
@@ -140,11 +138,6 @@ export async function updatePackageJson(
 
   if (options.authentication) {
     packageJson.dependencies["next-auth"] = "^4.24.11"
-  }
-
-  // If local tarball is provided, replace shadpanel version with file path
-  if (options.localTarballPath && await fs.pathExists(options.localTarballPath)) {
-    packageJson.dependencies["shadpanel"] = `file:${options.localTarballPath}`
   }
 
   await fs.writeJson(packageJsonPath, packageJson, { spaces: 2 })

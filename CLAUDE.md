@@ -4,11 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Nextonel is a Next.js 15 application with a multi-provider authentication system using NextAuth.js. The application features an admin panel with configurable OAuth and credentials-based authentication providers (Google, GitHub, and email/password).
+**ShadPanel** is a Next.js 15 admin panel CLI tool published to NPM. Users run `npx shadpanel init` to scaffold complete admin panels with authentication, form builders, data tables, and 50+ UI components.
+
+This repository serves two purposes:
+1. **Demo Application**: A working Next.js app showcasing all ShadPanel features
+2. **CLI Package Source**: Contains the CLI tool and templates for scaffolding new projects
+
+## Project Type
+
+This is an **npx-based CLI tool**, NOT an installable npm package. Users do NOT install it as a dependency. They use it via `npx shadpanel init` to create new projects.
 
 ## Development Commands
 
-### Running the application
+### Running the demo application
 ```bash
 npm run dev          # Start development server with Turbopack
 npm run build        # Build production bundle with Turbopack
@@ -17,6 +25,24 @@ npm run lint         # Run ESLint
 ```
 
 The development server runs on http://localhost:3000 by default.
+
+## CLI Architecture
+
+### CLI Tool
+- **Location**: `/cli/` directory
+- **Entry Point**: `cli/index.ts`
+- **Purpose**: Scaffolds new Next.js admin panel projects
+- **Usage**: `npx shadpanel init`
+
+### Templates
+- **Location**: `/templates/` directory
+- **Contents**: Template files copied to user's project during `npx shadpanel init`
+- **Includes**: Components, layouts, pages, auth configuration, etc.
+
+### Components (Templates)
+- **Location**: `/components/` directory
+- **Purpose**: Component templates copied during scaffolding
+- **Includes**: UI components, form builders, data tables, sidebars, etc.
 
 ## Authentication Architecture
 
@@ -63,6 +89,24 @@ app/
 - **signup-form.tsx**: User registration form
 - **providers.tsx**: Root providers wrapper (SessionProvider + AuthProvidersProvider)
 
+### CLI Organization
+```
+cli/
+├── index.ts           # Main CLI entry point
+├── commands/          # CLI commands
+└── utils/             # CLI utilities
+```
+
+### Templates Organization
+```
+templates/
+├── app/               # Next.js app directory templates
+├── components/        # Component templates
+├── hooks/            # React hooks templates
+├── contexts/         # Context providers templates
+└── lib/              # Utilities templates
+```
+
 ### Key Architectural Patterns
 
 1. **Provider Composition**: The app uses nested providers at the root level:
@@ -101,10 +145,34 @@ Required environment variables (see `.env.example`):
 - **UI Components**: Radix UI primitives + shadcn/ui
 - **Styling**: Tailwind CSS v4
 
+## Publishing to NPM
+
+To publish updates to the CLI:
+
+```bash
+# 1. Update version in package.json
+npm version patch  # or minor, or major
+
+# 2. Login to NPM (if not already)
+npm login
+
+# 3. Publish
+npm publish
+```
+
+Users will then be able to use the latest version via:
+```bash
+npx shadpanel@latest init
+```
+
 ## Important Notes
 
-- The app uses the Next.js App Router (not Pages Router)
+- This is an **npx CLI tool**, not an installable package
+- The `app/` directory is a demo application showcasing all features
+- The `cli/` directory contains the CLI tool source
+- The `templates/` and `components/` directories contain files copied during scaffolding
 - All admin routes require authentication except `/admin/login` and `/admin/signup`
 - Auth provider configuration is stored in browser localStorage (client-side only)
 - The root page (`/`) redirects to `/admin/login` via client-side `useEffect`
 - TypeScript strict mode is enabled
+- **DO NOT remove any files from `app/`, `components/`, `templates/`, or `cli/` directories** as they are essential for the demo and CLI functionality

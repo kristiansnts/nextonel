@@ -8,8 +8,8 @@ import {
   TextColumn,
   ImageColumn,
   ActionsColumn,
-} from "shadpanel/components"
-import { Button } from "shadpanel/components"
+} from "@/components/ui"
+import { Button } from "@/components/ui"
 import { Plus } from "lucide-react"
 import { User, UsersResponse } from "@/types/user"
 import { toast } from "sonner"

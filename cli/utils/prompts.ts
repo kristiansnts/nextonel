@@ -13,7 +13,6 @@ export interface InitAnswers {
   authProviders: string[]
   demos: boolean
   demoTypes: string[]
-  customTheme: boolean
   initGit: boolean
 }
 
@@ -24,12 +23,28 @@ export async function promptInitQuestions(
 
   const questions = [
     {
+      type: "text" as const,
+      name: "projectName",
+      message: "What is your project name?",
+      initial: defaultProjectName,
+      validate: (value: string) => {
+        if (!value) return "Project name is required"
+        if (value.includes(" ")) return "Project name cannot contain spaces"
+
+        // Check if directory exists
+        if (fs.existsSync(path.resolve(process.cwd(), value))) {
+          return `Directory "${value}" already exists`
+        }
+        return true
+      },
+    },
+    {
       type: "select" as const,
       name: "installationType",
       message: "What do you want to install?",
       choices: [
         {
-          title: "Full Panel with Auth (Recommended for fresh Next.js installation)",
+          title: "Full Panel with Auth",
           value: "full-panel",
           description: "Complete admin panel with authentication, sidebar, and demo pages"
         },
@@ -45,46 +60,6 @@ export async function promptInitQuestions(
         },
       ],
       initial: 0,
-    },
-    {
-      type: "text" as const,
-      name: "projectName",
-      message: (prev: any, answers: any) => {
-        // Different message based on installation type
-        if (answers.installationType === "full-panel") {
-          return "What is your project name?"
-        } else {
-          return "What is your project name? (use '.' for current directory)"
-        }
-      },
-      initial: (prev: any, answers: any) => {
-        // Suggest current directory for non-full-panel installations
-        return answers.installationType === "full-panel" ? defaultProjectName : "."
-      },
-      validate: (value: string, answers: any) => {
-        if (!value) return "Project name is required"
-        if (value.includes(" ")) return "Project name cannot contain spaces"
-
-        // Allow current directory (.) for components-only and auth-components
-        if (value === ".") {
-          // Check if answers exists and has installationType
-          if (answers && answers.installationType) {
-            if (answers.installationType === "components-only" || answers.installationType === "auth-components") {
-              return true
-            } else {
-              return "Cannot install full panel in current directory. Please specify a new directory name."
-            }
-          }
-          // If answers not available yet, allow it for now (will be validated later if needed)
-          return true
-        }
-
-        // Check if directory exists (for new directories)
-        if (fs.existsSync(path.resolve(process.cwd(), value))) {
-          return `Directory "${value}" already exists`
-        }
-        return true
-      },
     },
     {
       type: "select" as const,
@@ -141,7 +116,7 @@ export async function promptInitQuestions(
         return answers.installationType === "full-panel" ? "confirm" : null
       },
       name: "demos",
-      message: "Do you want to include demo pages?",
+      message: "Do you want to include demo pages? (recommended for learning)",
       initial: true,
     },
     {
@@ -160,12 +135,6 @@ export async function promptInitQuestions(
     },
     {
       type: "confirm" as const,
-      name: "customTheme",
-      message: "Do you want to customize the theme?",
-      initial: false,
-    },
-    {
-      type: "confirm" as const,
       name: "initGit",
       message: "Initialize a git repository?",
       initial: true,
@@ -179,11 +148,6 @@ export async function promptInitQuestions(
       },
     })
 
-    // Post-validation: Ensure full-panel is not installed in current directory
-    if (answers.installationType === "full-panel" && answers.projectName === ".") {
-      console.error("\nError: Cannot install full panel in current directory. Please specify a new directory name.")
-      process.exit(1)
-    }
 
     // Set authentication based on installation type
     if (answers.installationType === "full-panel" || answers.installationType === "auth-components") {

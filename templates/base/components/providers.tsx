@@ -2,7 +2,7 @@
 
 import { PanelProvider } from "@/contexts/panel-context"
 import { ThemeProvider } from "next-themes"
-import { Toaster } from "shadpanel"
+import { Toaster } from "sonner"
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

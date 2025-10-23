@@ -10,8 +10,8 @@ import {
   Select,
   Section,
   Grid,
-} from "shadpanel/components"
-import { Button } from "shadpanel/components"
+} from "@/components/ui"
+import { Button } from "@/components/ui"
 
 export default function FormDemoPage() {
   const [formData, setFormData] = useState<Record<string, unknown>>({})

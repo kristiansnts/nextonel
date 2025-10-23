@@ -1,4 +1,6 @@
 import path from "path"
+import { fileURLToPath } from "url"
+import { randomBytes } from "crypto"
 import fs from "fs-extra"
 import { promptInitQuestions, promptAppName } from "../utils/prompts"
 import { logger } from "../utils/logger"
@@ -9,6 +11,9 @@ import {
   copyConfigTemplate,
   createEnvFile,
   mergeMenuConfigs,
+  copyUIComponents,
+  copyLibUtils,
+  copyHooks,
   type TemplateVariables,
 } from "../utils/files"
 import {
@@ -20,6 +25,10 @@ import {
 } from "../utils/dependencies"
 import { initGitRepository, isGitAvailable } from "../utils/git"
 import packageJson from "../../package.json"
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export async function initCommand(projectName?: string): Promise<void> {
   logger.welcome()
@@ -40,8 +49,12 @@ export async function initCommand(projectName?: string): Promise<void> {
     process.exit(1)
   }
 
-  // Get application name
-  const appName = await promptAppName()
+  // Convert project name to application display name
+  // e.g., "my-admin-panel" -> "My Admin Panel"
+  const appName = answers.projectName
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
 
   // Setup paths
   // Handle current directory (.) for components-only and auth-components
@@ -60,11 +73,15 @@ export async function initCommand(projectName?: string): Promise<void> {
   logger.info(`Setting up your project in: ${targetDir}`)
   logger.newline()
 
+  // Generate a secure random secret for NextAuth
+  const nextAuthSecret = randomBytes(32).toString('base64')
+
   // Create template variables
   const variables: TemplateVariables = {
     APP_NAME: appName,
     PROJECT_NAME: answers.projectName,
     SHADPANEL_VERSION: packageJson.version,
+    NEXTAUTH_SECRET: nextAuthSecret,
     GOOGLE: answers.authProviders.includes("google"),
     GITHUB: answers.authProviders.includes("github"),
     CREDENTIALS: answers.authProviders.includes("credentials"),
@@ -108,23 +125,26 @@ export async function initCommand(projectName?: string): Promise<void> {
       spinner5.succeed("Demo pages added")
     }
 
+    // Step 5.5: Copy UI components, lib, and hooks from package
+    const packageDir = path.resolve(__dirname, "..")
+    const spinnerComponents = logger.spinner("Copying UI components...")
+    spinnerComponents.start()
+    await copyUIComponents(packageDir, targetDir)
+    await copyLibUtils(packageDir, targetDir)
+    await copyHooks(packageDir, targetDir)
+    spinnerComponents.succeed("UI components copied")
+
     // Step 6: Create .env file
     const spinner6 = logger.spinner("Creating environment file...")
     spinner6.start()
     await createEnvFile(targetDir)
     spinner6.succeed("Environment file created")
 
-    // Get path to local tarball for development/testing
-    // When built, __dirname is dist/, so we go up one level to find the tarball
-    const localTarball = path.resolve(__dirname, "../shadpanel-0.1.0.tgz")
-
     // Step 7: Update package.json with conditional dependencies
     const spinner7 = logger.spinner("Updating dependencies...")
     spinner7.start()
     await updatePackageJson(targetDir, {
       authentication: answers.authentication,
-      shadpanelVersion: packageJson.version,
-      localTarballPath: localTarball,
     })
     spinner7.succeed("Dependencies updated")
 
@@ -165,10 +185,6 @@ export async function initCommand(projectName?: string): Promise<void> {
       logger.info(
         "Don't forget to set up your authentication providers in .env"
       )
-    }
-
-    if (answers.customTheme) {
-      logger.info("You can customize your theme in app/globals.css")
     }
   } catch (error) {
     logger.error("Failed to initialize project")

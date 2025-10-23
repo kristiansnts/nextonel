@@ -3,10 +3,10 @@ export { Form } from "./form"
 
 // Form fields
 export { TextInput } from "./fields/text-input"
-export { Textarea } from "./fields/textarea"
-export { Checkbox } from "./fields/checkbox"
+export { Textarea as FormTextarea } from "./fields/textarea"
+export { Checkbox as FormCheckbox } from "./fields/checkbox"
 export { Toggle } from "./fields/toggle"
-export { Select } from "./fields/select"
+export { Select as FormSelect } from "./fields/select"
 export { TagsInput } from "./fields/tags-input"
 export { DatePicker } from "./fields/date-picker"
 export { DateTimePicker } from "./fields/date-time-picker"
@@ -19,7 +19,7 @@ export { RichEditor } from "./fields/rich-editor"
 export { Grid } from "./layout/grid"
 export { Section } from "./layout/section"
 export { Fieldset } from "./layout/fieldset"
-export { Tabs } from "./layout/tabs"
+export { Tabs as FormTabs } from "./layout/tabs"
 export { Group } from "./layout/group"
 export { Placeholder } from "./layout/placeholder"
 
@@ -28,10 +28,10 @@ export type {
   ValidationRule,
   BaseFieldProps,
   TextInputProps,
-  TextareaProps,
-  CheckboxProps,
+  TextareaProps as FormTextareaProps,
+  CheckboxProps as FormCheckboxProps,
   ToggleProps,
-  SelectProps,
+  SelectProps as FormSelectProps,
   TagsInputProps,
   DatePickerProps,
   DateTimePickerProps,
@@ -42,7 +42,7 @@ export type {
   GridProps,
   SectionProps,
   FieldsetProps,
-  TabsProps,
+  TabsProps as FormTabsProps,
   GroupProps,
   PlaceholderProps,
   FormContextValue,
