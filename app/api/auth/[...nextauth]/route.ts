@@ -73,7 +73,7 @@ const handler = NextAuth({
     warn(code) {
       console.warn(code)
     },
-    debug(code, metadata) {
+    debug(_code, _metadata) {
       // Suppress debug logs in production
     }
   }
